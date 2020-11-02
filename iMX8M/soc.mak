@@ -202,7 +202,7 @@ flash_ddr4_val: $(MKIMG) signed_hdmi_imx8m.bin u-boot-spl-ddr4.bin u-boot-ddr4.i
 	./mkimage_imx8 -fit -signed_hdmi signed_hdmi_imx8m.bin -loader u-boot-spl-ddr4.bin $(SPL_LOAD_ADDR) -second_loader u-boot-ddr4.itb 0x40200000 0x60000 -out $(OUTIMG)
 
 else
-flash_evk: flash_evk_no_hdmi
+flash_evk: flash_evk_spl
 
 flash_evk_emmc_fastboot: flash_evk_no_hdmi_emmc_fastboot
 
@@ -213,6 +213,9 @@ flash_ddr3l_val: flash_ddr3l_val_no_hdmi
 flash_ddr4_val: flash_ddr4_val_no_hdmi
 
 endif
+
+flash_evk_spl: $(MKIMG) u-boot-spl-ddr.bin u-boot.itb
+	./mkimage_imx8 -version $(VERSION) -fit -loader u-boot-spl-ddr.bin $(SPL_LOAD_ADDR) -out $(OUTIMG)
 
 flash_evk_no_hdmi: $(MKIMG) u-boot-spl-ddr.bin u-boot.itb
 	./mkimage_imx8 -version $(VERSION) -fit -loader u-boot-spl-ddr.bin $(SPL_LOAD_ADDR) -second_loader u-boot.itb 0x40200000 0x60000 -out $(OUTIMG)

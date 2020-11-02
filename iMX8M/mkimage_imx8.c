@@ -1587,7 +1587,13 @@ int main(int argc, char **argv)
 		copy_file(ofd, csf_img, 0, csf_off, 0);
 	} else {
 		csf_off -= ivt_offset;
-		fill_zero(ofd, CSF_SIZE, csf_off);
+		/*
+		 * with no sld, there is no need to extend the image zeroing
+		 * the CSF region (just extend the binary to the begining of
+		 * CSF so it can be signed) */
+		fill_zero(ofd,
+			  sld_img ? CSF_SIZE : 1,
+			  sld_img ? csf_off : csf_off - 1);
 	}
 
 	if (sld_img) {
